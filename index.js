@@ -1,3 +1,5 @@
+// load environment variables
+require('dotenv').config({silent: true})
 // types
 const types = require('./types')
 // resolvers
@@ -8,7 +10,6 @@ const mutations = require('./mutations')
 const bodyParser = require('body-parser')
 const {buildSchema} = require('graphql')
 const compression = require('compression')
-const cors = require('./utilities/cors')
 const express = require('express')
 const graphqlHTTP = require('express-graphql')
 const morgan = require('morgan')
@@ -33,7 +34,12 @@ const app = express()
 
 app.use(compression())
 app.use(morgan('dev'))
-app.use(cors)
+
+if (process.env.CORS_WHITELIST) {
+  const cors = require('./utilities/cors')
+
+  app.use(cors)
+}
 
 app.use('/', bodyParser.json())
 app.use('/', graphqlHTTP({
