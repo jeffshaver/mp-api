@@ -1,14 +1,30 @@
 const casual = require('casual')
 const getUser = require('../utilities/get-user')
 const namespacesData = require('../data/namespaces')
+const kubeApi = require('../utilities/k8s')
 
 const createNamespace = ({name, projectId}) => {
-  const namespace = casual.namespace(projectId, name)
-  const user = getUser()
+  const {username} = getUser()
 
-  namespacesData[user.id].push(namespace)
+  console.log('createNS', name, projectId)
 
-  return namespace
+  return kubeApi.post('namespaces', {
+    apiVersion: 'v1',
+    kind: 'Namespace',
+    metadata: {
+      annotations: {
+        projectId: projectId,
+        'openshift.io/requester': username
+      },
+      name
+    },
+    spec: {
+      finalizers: [
+        'openshift.io/origin',
+        'kubernetes'
+      ]
+    }
+  })
 }
 
 module.exports = createNamespace

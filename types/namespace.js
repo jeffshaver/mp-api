@@ -1,9 +1,8 @@
 const Namespace = `
   type Namespace {
-    id: String
-    name: String
-    projectId: String
-    status: String
+    uid: String
+    metadata: Metadata
+    status: Status
   }
 `
 
