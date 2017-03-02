@@ -1,11 +1,10 @@
-const projectsData = require('../data/projects')
-const getUser = require('../utilities/get-user')
-const makePromise = require('../utilities/make-promise')
+const mongo = require('../utilities/mongo')
+const find = require('../utilities/find-promise')
+
+const collection = mongo.db().collection('projects')
 
 const projects = () => {
-  const user = getUser()
-
-  return makePromise(projectsData[user.id])
+  return find(collection, {})
 }
 
 module.exports = projects

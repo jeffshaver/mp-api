@@ -1,12 +1,7 @@
-const namespacesData = require('../data/namespaces')
-const getUser = require('../utilities/get-user')
-const makePromise = require('../utilities/make-promise')
-const kubeApi = require('../utilities/k8s')
+const k8s = require('../utilities/k8s')
 
 const namespaces = () => {
-  const user = getUser()
-
-  return kubeApi.get('namespaces')
+  return k8s.get('namespaces')
     .then((data) => {
       return data.items
     })
